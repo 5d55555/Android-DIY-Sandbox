@@ -76,14 +76,15 @@
             android:foregroundServiceType="dataSync"
             android:exported="false" />
         
-        <!-- Shizuku: 接收 Shizuku 服务端推送的 binder -->
-        <!-- 注意: 不设 android:permission, 这样同 uid 的 proot 子进程也能调 call("getBinder") 拿到服务端 binder -->
+        <!-- Shizuku 13: 接收 Shizuku 服务端(adb/root)推送的 binder, 并提供 call("getBinder") 给
+             同 uid 进程(含 proot 容器)取服务端 binder. 类名必须是 rikka.shizuku.ShizukuProvider
+             (provider 在独立库 dev.rikka.shizuku:provider, 老类名 moe.shizuku.api.ShizukuProvider 不存在). -->
         <provider
-            android:name="moe.shizuku.api.ShizukuProvider"
+            android:name="rikka.shizuku.ShizukuProvider"
             android:authorities="${applicationId}.shizuku"
             android:multiprocess="false"
             android:exported="true"
-            android:enabled="true" />
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
         <!-- Ubuntu Documents Provider -->
         <provider

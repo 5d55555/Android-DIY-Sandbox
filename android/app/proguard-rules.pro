@@ -17,5 +17,8 @@
 -keep class com.norman.webviewup.** { *; }
 -keepattributes *Annotation*
 
-# Shizuku: provider 类由系统通过 manifest 按名实例化, 需保留
--keep class moe.shizuku.api.ShizukuProvider { *; }
+# Shizuku: provider 类由系统通过 manifest 按名实例化, 需保留 (Shizuku 13: rikka.shizuku.ShizukuProvider)
+-keep class rikka.shizuku.ShizukuProvider { *; }
+-keep class moe.shizuku.api.BinderContainer { *; }
+-dontwarn rikka.shizuku.**
+-dontwarn moe.shizuku.**

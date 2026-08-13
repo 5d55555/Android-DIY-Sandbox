@@ -43,17 +43,17 @@ jobs:
           apk = sys.argv[1]
           z = zipfile.ZipFile(apk)
           man = z.read('AndroidManifest.xml')
-          ok_manifest = b'ShizukuProvider' in man or b'ShizukuProvider'.replace(b'', b'').lower() in man
-          ok_manifest = any(k in man for k in (b'ShizukuProvider', b'Shizuku'))
+          # AXML string pool uses UTF-16
+          ok_manifest = b'ShizukuProvider' in man or b'S\x00h\x00i\x00z\x00u\x00k\x00u\x00P\x00r\x00o\x00v\x00i\x00d\x00e\x00r\x00' in man
           found = False
           for n in z.namelist():
               if n.startswith('classes') and n.endswith('.dex'):
                   d = z.read(n)
-                  if b'moe/shizuku' in d:
+                  if b'ShizukuProvider' in d or b'rikka/shizuku' in d:
                       found = True
                       break
           print('manifest ShizukuProvider:', ok_manifest)
-          print('dex moe/shizuku classes:', found)
+          print('dex ShizukuProvider/rikka.shizuku classes:', found)
           if not (ok_manifest and found):
               sys.exit('VERIFY FAILED: ShizukuProvider missing from APK')
           print('VERIFY OK')

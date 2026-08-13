@@ -144,4 +144,7 @@ dependencies {
     implementation 'androidx.media:media:1.7.0'
     implementation project(':webviewup-core')
     implementation 'dev.rikka.shizuku:api:13.1.5'
+    // Shizuku 13 把 ShizukuProvider 拆到独立库, 仅依赖 api 会导致
+    // manifest 引用的 rikka.shizuku.ShizukuProvider 类缺失, 进程启动即闪退
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
 }
