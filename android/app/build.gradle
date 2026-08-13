@@ -76,8 +76,10 @@ android {
     buildTypes {
         release {
             signingConfig hasKeystoreFile ? signingConfigs.release : signingConfigs.debug
-            minifyEnabled true
-            shrinkResources true
+            // 关闭 R8 混淆/裁剪: 确保 ShizukuProvider 等按名引用的类完整保留 (此前 R8 把
+            // dev.rikka.shizuku:api 的类整体移除, 导致 provider 加载时 ClassNotFoundException 闪退)
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // 禁用对特定原生库的strip操作，避免处理错误
             packagingOptions {

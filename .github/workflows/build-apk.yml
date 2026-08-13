@@ -20,7 +20,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          version: 3.32.3
+          flutter-version: '3.32.3'
           cache: true
           android-licenses: true
 
@@ -34,6 +34,31 @@ jobs:
 
       - name: Build APK
         run: flutter build apk --release --no-tree-shake-icons || true
+
+      - name: Verify APK contents
+        run: |
+          APK=build/app/outputs/flutter-apk/app-normal-release.apk
+          if [ ! -f "$APK" ]; then echo "APK missing: $APK"; exit 1; fi
+          python3 - "$APK" <<'EOF'
+          import sys, zipfile
+          apk = sys.argv[1]
+          z = zipfile.ZipFile(apk)
+          man = z.read('AndroidManifest.xml')
+          ok_manifest = b'ShizukuProvider' in man or b'ShizukuProvider'.replace(b'', b'').lower() in man
+          ok_manifest = any(k in man for k in (b'ShizukuProvider', b'Shizuku'))
+          found = False
+          for n in z.namelist():
+              if n.startswith('classes') and n.endswith('.dex'):
+                  d = z.read(n)
+                  if b'moe/shizuku' in d:
+                      found = True
+                      break
+          print('manifest ShizukuProvider:', ok_manifest)
+          print('dex moe/shizuku classes:', found)
+          if not (ok_manifest and found):
+              sys.exit('VERIFY FAILED: ShizukuProvider missing from APK')
+          print('VERIFY OK')
+          EOF
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
