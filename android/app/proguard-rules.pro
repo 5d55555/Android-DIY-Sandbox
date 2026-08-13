@@ -16,3 +16,6 @@
 # WebViewUpgrade hooks Android WebView services through reflection and proxies.
 -keep class com.norman.webviewup.** { *; }
 -keepattributes *Annotation*
+
+# Shizuku: provider 类由系统通过 manifest 按名实例化, 需保留
+-keep class moe.shizuku.api.ShizukuProvider { *; }

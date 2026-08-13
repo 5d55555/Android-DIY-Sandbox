@@ -141,4 +141,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.media:media:1.7.0'
     implementation project(':webviewup-core')
+    implementation 'dev.rikka.shizuku:api:13.1.5'
 }

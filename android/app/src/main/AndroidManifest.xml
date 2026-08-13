@@ -20,6 +20,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- Shizuku: 请求使用 Shizuku 服务 (免 root 以 shell 权限调用系统 API) -->
+    <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
+
     <!-- url_launcher需要声明可以打开浏览器 -->
     <queries>
         <intent>
@@ -73,6 +76,15 @@
             android:foregroundServiceType="dataSync"
             android:exported="false" />
         
+        <!-- Shizuku: 接收 Shizuku 服务端推送的 binder -->
+        <!-- 注意: 不设 android:permission, 这样同 uid 的 proot 子进程也能调 call("getBinder") 拿到服务端 binder -->
+        <provider
+            android:name="moe.shizuku.api.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:exported="true"
+            android:enabled="true" />
+
         <!-- Ubuntu Documents Provider -->
         <provider
             android:name=".UbuntuDocumentsProvider"
