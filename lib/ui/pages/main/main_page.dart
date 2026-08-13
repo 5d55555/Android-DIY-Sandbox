@@ -11,7 +11,6 @@ import '../settings/settings_page.dart';
 import '../terminal/terminal_tab_view.dart';
 import '../webview/webview_tab_view.dart';
 import '../love/love_game_view.dart';
-import '../logs/lua_log_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -291,13 +290,6 @@ class _MainPageState extends State<MainPage> {
                   tooltip: '导出脚本 (zip)',
                   icon: const Icon(Icons.file_upload_outlined),
                   onPressed: _exportScripts,
-                ),
-                IconButton(
-                  tooltip: 'Lua 日志',
-                  icon: const Icon(Icons.article_outlined),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LuaLogPage()),
-                  ),
                 ),
               ],
             ),
