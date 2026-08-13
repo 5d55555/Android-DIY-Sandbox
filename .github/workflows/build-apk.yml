@@ -20,32 +20,23 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          version: 3.32.3
           cache: true
           android-licenses: true
-
-      - name: Pub get
-        run: flutter pub get
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.14.3'
 
-      - name: Prepare local.properties
-        run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
-          echo "flutter.sdk=$FLUTTER_ROOT" >> android/local.properties
-
-      - name: Generate gradle wrapper
-        working-directory: android
-        run: gradle wrapper --gradle-version 8.14.3
+      - name: Pub get
+        run: flutter pub get
 
       - name: Build APK
-        working-directory: android
-        run: ./gradlew assembleNormalRelease --no-daemon
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: android/app/build/outputs/apk/normal/release/*.apk
+          path: build/app/outputs/flutter-apk/*.apk
